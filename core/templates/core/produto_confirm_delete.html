@@ -1,0 +1,27 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Excluir Produto — EstoqueFlow{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0">Confirmar exclusão</h5>
+            </div>
+            <div class="card-body">
+                <p>Tem certeza que deseja excluir o produto:</p>
+                <h4>{{ produto.nome }}</h4>
+                <p class="text-muted">Categoria: {{ produto.categoria|default:"—" }} | Quantidade: {{ produto.quantidade }}</p>
+                <p class="text-danger fw-bold">Esta ação não pode ser desfeita.</p>
+
+                <form method="post" class="d-flex gap-2 mt-3">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Sim, excluir</button>
+                    <a href="{% url 'admin_produtos' %}" class="btn btn-secondary">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

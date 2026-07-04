@@ -1,0 +1,40 @@
+# Ambiente virtual
+venv/
+env/
+.venv/
+
+# Banco de dados local
+db.sqlite3
+
+# Bytecode Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Variáveis de ambiente e segredos
+.env
+.env.*
+!.env.example
+
+# IDEs e editores
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# macOS
+.DS_Store
+
+# Arquivos de migração de banco de dados (opcional — mantido aqui para não versionar)
+# *.sqlite3
+
+# Arquivos gerados em produção
+staticfiles/
+
+# Distribuição / build
+dist/
+build/
+*.egg-info/
+
+# Logs
+*.log

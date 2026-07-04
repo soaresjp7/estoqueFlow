@@ -1,0 +1,38 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Início — EstoqueFlow{% endblock %}
+
+{% block content %}
+<div class="p-5 mb-4 bg-dark text-white rounded-3">
+    <div class="container-fluid py-3">
+        <h1 class="display-5 fw-bold">📦 EstoqueFlow</h1>
+        <p class="col-md-8 fs-4">Sistema simples e eficiente para gerenciar o estoque do seu negócio.</p>
+        <a href="/produtos/" class="btn btn-warning btn-lg me-2">Ver Produtos</a>
+        <a href="/sobre/" class="btn btn-outline-light btn-lg">Saiba Mais</a>
+    </div>
+</div>
+
+<div class="row text-center mt-4">
+    <div class="col-md-4">
+        <div class="card p-4 shadow-sm">
+            <h2>📋</h2>
+            <h5>Cadastro Fácil</h5>
+            <p>Adicione produtos rapidamente com todas as informações necessárias.</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card p-4 shadow-sm">
+            <h2>🔍</h2>
+            <h5>Pesquisa Rápida</h5>
+            <p>Encontre qualquer produto em segundos pelo nome ou categoria.</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card p-4 shadow-sm">
+            <h2>📊</h2>
+            <h5>Controle Total</h5>
+            <p>Edite, exclua e acompanhe a quantidade de cada item no estoque.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
