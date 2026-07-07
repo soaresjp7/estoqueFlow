@@ -1,7 +1,9 @@
+import json
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.db.models import Sum, Count, F, ExpressionWrapper, DecimalField
 from .models import Produto
 from .forms import ProdutoForm
 
@@ -20,6 +22,51 @@ def contato(request):
 def produtos(request):
     lista_produtos = Produto.objects.all().order_by('nome')
     return render(request, 'core/produtos.html', {'produtos': lista_produtos})
+
+
+# ---------- Dashboard ----------
+
+ESTOQUE_BAIXO_LIMITE = 10
+_valor_expr = ExpressionWrapper(F('quantidade') * F('preco'), output_field=DecimalField())
+
+@login_required(login_url='login')
+def dashboard(request):
+    total_produtos = Produto.objects.count()
+
+    valor_total = Produto.objects.aggregate(
+        total=Sum(_valor_expr)
+    )['total'] or 0
+
+    estoque_baixo = Produto.objects.filter(
+        quantidade__lt=ESTOQUE_BAIXO_LIMITE
+    ).count()
+
+    por_categoria = list(
+        Produto.objects.values('categoria').annotate(
+            count=Count('id'),
+            valor=Sum(_valor_expr),
+        ).order_by('-count')
+    )
+
+    dados_grafico = {
+        'labels': [item['categoria'] or 'Sem categoria' for item in por_categoria],
+        'counts': [item['count'] for item in por_categoria],
+        'valores': [float(item['valor'] or 0) for item in por_categoria],
+    }
+
+    lista_produtos = Produto.objects.annotate(
+        valor_item=ExpressionWrapper(F('quantidade') * F('preco'), output_field=DecimalField())
+    ).order_by('quantidade', 'nome')
+
+    return render(request, 'core/dashboard.html', {
+        'total_produtos': total_produtos,
+        'valor_total': float(valor_total),
+        'estoque_baixo': estoque_baixo,
+        'estoque_baixo_limite': ESTOQUE_BAIXO_LIMITE,
+        'por_categoria': por_categoria,
+        'dados_grafico': dados_grafico,
+        'lista_produtos': lista_produtos,
+    })
 
 
 # ---------- Login / Logout ----------
